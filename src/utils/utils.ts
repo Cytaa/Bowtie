@@ -1,11 +1,10 @@
-import { Client } from "discord.js";
+import { Client, GuildMember } from "discord.js";
 
-export const getUserById = async (
+export const getUserById = (
     client: Client,
     id: string,
     guildId: string
-) => {
+): GuildMember | undefined => {
     const guild = client.guilds.cache.get(guildId);
-    const user = guild?.members.cache.get(id);
-    console.log(user);
+    return guild?.members.cache.get(id);
 };

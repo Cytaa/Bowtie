@@ -4,6 +4,7 @@ import {
     GuildMember,
     Intents,
     Interaction,
+    VoiceChannel,
 } from "discord.js";
 import { stringify } from "querystring";
 import { deploy } from "./commands/commandsRegister";
@@ -28,7 +29,7 @@ client.on("messageCreate", (msg) => {
 
 client.on("interactionCreate", async (interaction: Interaction) => {
     if (!interaction.isCommand()) return;
-    const { commandName, options } = interaction;
+    const { commandName, options, user } = interaction;
 
     if (commandName === "play") {
         const video: Video = await videoFinder(
@@ -36,9 +37,15 @@ client.on("interactionCreate", async (interaction: Interaction) => {
         );
         interaction.reply(`Link do twojego video: ${video.url}`);
         return;
+        //play(options.getString("query", true), user.id);
     }
 
     interaction.reply(`basic response to: ${commandName}`);
 });
+
+const play = (option: string, userId: string) => {
+    const user: GuildMember | undefined = getUserById(client, userId, guildId);
+    console.log(user?.voice.channel);
+};
 
 client.login(token);

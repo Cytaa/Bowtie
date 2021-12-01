@@ -1,7 +1,15 @@
-import { Client, Intents, Interaction } from "discord.js";
-import { deploy } from "./commands/deployCommands";
-const { token } = require("../config.json");
-
+import {
+    Client,
+    GuildManager,
+    GuildMember,
+    Intents,
+    Interaction,
+} from "discord.js";
+import { stringify } from "querystring";
+import { deploy } from "./commands/commandsRegister";
+const { token, guildId } = require("../config.json");
+import { getUserById } from "./utils/utils";
+import { videoFinder } from "./commands/play";
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
 });
@@ -14,19 +22,23 @@ client.on("ready", () => {
 client.on("messageCreate", (msg) => {
     if (msg.content === "ping") {
         msg.reply("pong");
+        return;
     }
 });
 
 client.on("interactionCreate", async (interaction: Interaction) => {
     if (!interaction.isCommand()) return;
-    console.log(await interaction.toJSON());
     const { commandName, options } = interaction;
 
-    if (commandName === "ping") {
-        interaction.reply("siemanko");
+    if (commandName === "play") {
+        const video: Video = await videoFinder(
+            options.getString("query", true)
+        );
+        interaction.reply(`Link do twojego video: ${video.url}`);
+        return;
     }
-});
 
-// client.on("message", )
+    interaction.reply(`basic response to: ${commandName}`);
+});
 
 client.login(token);

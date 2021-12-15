@@ -12,11 +12,23 @@ const commands = [
         .setDescription("replay with pong"),
     new SlashCommandBuilder()
         .setName("play")
-        .setDescription("To do")
+        .setDescription("Returns video from youtube")
         .addStringOption((option: SlashCommandStringOption) => {
             return option
                 .setName("query")
                 .setDescription("insert your query")
+                .setRequired(true);
+        }),
+    new SlashCommandBuilder()
+        .setName("spotify")
+        .setDescription("returns spotify playlist"),
+    new SlashCommandBuilder()
+        .setName("stream")
+        .setDescription("Streams audio to your current voice channel")
+        .addStringOption((option) => {
+            return option
+                .setName("url")
+                .setDescription("youtube video url adress")
                 .setRequired(true);
         }),
 ].map((command) => command.toJSON());

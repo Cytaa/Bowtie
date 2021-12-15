@@ -107,3 +107,7 @@ dist
 *.js
 
 config.json
+
+assets
+*.mp3
+*.mp4

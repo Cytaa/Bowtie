@@ -23,8 +23,8 @@ const commands = [
         .setName("spotify")
         .setDescription("returns spotify playlist"),
     new SlashCommandBuilder()
-        .setName("stream")
-        .setDescription("Streams audio to your current voice channel")
+        .setName("youtube")
+        .setDescription("Returns yt video with player")
         .addStringOption((option) => {
             return option
                 .setName("url")

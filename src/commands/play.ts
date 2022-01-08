@@ -1,13 +1,6 @@
-import {
-    AudioPlayer,
-    createAudioPlayer,
-    createAudioResource,
-    joinVoiceChannel,
-    JoinVoiceChannelOptions,
-    StreamType,
-    VoiceConnection,
-} from "@discordjs/voice";
-import { CommandInteraction, StageChannel, VoiceChannel } from "discord.js";
+import { joinVoiceChannel, VoiceConnection } from "@discordjs/voice";
+import { StageChannel, VoiceChannel } from "discord.js";
+import { Video } from "../models/video";
 
 const fs = require("fs");
 const ytdl = require("ytdl-core");
@@ -30,28 +23,17 @@ export const joinChannel = (
 export const videoFinder = async (query: string): Promise<Video> => {
     let topResult: Video;
     const results = await ytSearch(query);
+
     topResult = results.videos[0];
     return topResult;
 };
 
 const streamVideo = (video: Video) => {
-    ytdl(video.url, { filter: "audioonly" })
-        .pipe(fs.createWriteStream("./src/assets/audio.mp3"))
-        .on("finish", () => console.log("Done"));
+    return ytdl(video.url, { filter: "audioonly" });
 };
 
-export const play = async (
-    voiceChannel: VoiceChannel | StageChannel,
-    query: string
-) => {
-    const connection = joinChannel(voiceChannel);
-    connection.setSpeaking(true);
+export const youtube = async (query: string) => {
     const video = await videoFinder(query);
-    streamVideo(video);
-    const player = createAudioPlayer();
-    const resource = createAudioResource("./src/assets/audio.mp3");
-    resource.volume?.setVolume(0.5);
-    connection.subscribe(player);
-    player.play(resource);
-    console.log(resource.audioPlayer);
+
+    return video.url;
 };

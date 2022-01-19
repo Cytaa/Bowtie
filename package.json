@@ -8,19 +8,22 @@
     "license": "MIT",
     "dependencies": {
         "@discordjs/builders": "^0.8.2",
+        "@discordjs/opus": "discordjs/opus",
         "@discordjs/rest": "^0.1.0-canary.0",
         "@discordjs/voice": "^0.7.5",
         "@types/ffmpeg-static": "^3.0.0",
         "@types/yt-search": "^2.3.2",
         "discord-api-types": "^0.24.0",
+        "discord-player": "^5.2.0",
         "discord.js": "^13.3.1",
-        "ffmpeg-static": "^4.4.0",
+        "ffmpeg-static": "^4.4.1",
+        "python-shell": "^3.0.1",
         "yt-search": "^2.10.2",
         "ytdl-core": "^4.9.1"
     },
     "devDependencies": {
         "@types/dotenv": "^8.2.0",
-        "@types/node": "^16.11.6",
+        "@types/node": "^17.0.10",
         "jslint": "^0.12.1",
         "prettier": "^2.4.1",
         "typescript": "^4.4.4"

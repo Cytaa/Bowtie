@@ -1,12 +1,9 @@
 import { Client, Intents } from "discord.js";
 import { youtube } from "./commands/play";
-
 import { Player, Queue, Track } from "discord-player";
-import { stringify } from "querystring";
 import { deploy } from "./commands/commandsRegister";
+import { getRecomendation } from "./utils/runPython";
 const { token, guildId } = require("../config.json");
-import { getUserById } from "./utils/utils";
-import { videoFinder, joinChannel, play } from "./commands/play";
 
 const client = new Client({
     intents: [
@@ -17,6 +14,7 @@ const client = new Client({
 });
 
 const player = new Player(client);
+
 player.on("trackStart", (queue: Queue<any>, track: Track) => {
     queue.metadata.channel.send(`🎶 | Now playing **${track.title}**!`);
     client.once("ready", () => {
@@ -29,9 +27,13 @@ client.on("ready", () => {
     console.log("Bowtie is up and running :D");
 });
 
-client.on("messageCreate", (msg) => {
-    if (msg.content === "ping") {
-        msg.reply("pong");
+client.on("messageCreate", async (msg) => {
+    console.log(msg.content);
+    if (msg.content.includes("rekomend")) {
+        let recommendation = getRecomendation();
+        console.log(recommendation);
+        const url = await youtube(recommendation);
+        msg.reply(url);
         return;
     }
 });
@@ -39,8 +41,6 @@ client.on("messageCreate", (msg) => {
 client.on("interactionCreate", async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    // /play track:Despacito
-    // will play "Despacito" in the voice channel
     if (interaction.commandName === "play") {
         if (!interaction.member.voice.channelId)
             return await interaction.reply({
@@ -63,7 +63,6 @@ client.on("interactionCreate", async (interaction) => {
             },
         });
 
-        // verify vc connection
         try {
             if (!queue.connection)
                 await queue.connect(interaction.member.voice.channel);
